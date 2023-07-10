@@ -1,7 +1,7 @@
+import IEntity from "../../@shared/entity/entity.interface";
 import IAddress from "./address.interface";
 
-export default interface ICustomer {
-    get id(): string
+export default interface ICustomer extends IEntity {
     get name(): string
     get Address(): IAddress
     get rewardPoints(): number

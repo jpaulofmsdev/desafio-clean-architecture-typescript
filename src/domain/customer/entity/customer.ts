@@ -1,32 +1,30 @@
+import Entity from "../../@shared/entity/entity.abstract"
 import IEventDispatcher from "../../@shared/event/event-dispatcher.interface"
+import NotificationError from "../../@shared/notification/notification.error"
 import CustomerAddressChangedEvent from "../event/customer-address-changed.event"
 import Address from "../value-object/address"
 import ICustomer from "./customer.interface"
 
-export default class Customer implements ICustomer{
+export default class Customer extends Entity implements ICustomer{
 
     private _eventDispatcher: IEventDispatcher
 
-    private _id: string
     private _name: string = ""
     private _address!: Address
     private _active: boolean = false
     private _rewardPoints: number = 0
 
     constructor(id: string, name: string, address?: Address, eventDispatcher?: IEventDispatcher) {
+        super()
         this._id = id
         this._name = name
-        this.validate()
+        this.validate(true)
         if(address) {
             this.changeAddress(address)
         }
         if(eventDispatcher) {
             this._eventDispatcher = eventDispatcher
         }
-    }
-
-    get id(): string {
-        return this._id
     }
 
     get name(): string {
@@ -41,18 +39,28 @@ export default class Customer implements ICustomer{
         return this._rewardPoints
     }
 
-    validate() {
+    validate(isThrowError: boolean = false): void {
         if(this._id.length === 0) {
-            throw new Error("Id is required")
+            this.notification.addError({
+                message: "Id is required",
+                context: "customer"
+            })
         }
         if(this._name.length === 0) {
-            throw new Error("Name is required")
+            this.notification.addError({
+                message: "Name is required",
+                context: "customer"
+            })
+        }
+
+        if(isThrowError && this.notification.hasErrors()) {
+            throw new NotificationError(this.notification.errors)
         }
     }
 
     changeName(name: string) {
         this._name = name
-        this.validate()
+        this.validate(true)
     }
 
     changeAddress(address: Address) {
