@@ -175,7 +175,7 @@ describe('UpdateCustomer e2e test', () => {
         })
 
         it('address number is empty', async () => {
-            input.address.number = 0
+            input.address.number = null
             const updateCustomerUseCase = new UpdateCustomerUseCase(new CustomerRepository())
             await expect(updateCustomerUseCase.execute(input)).rejects.toThrow('Number is required')
         })

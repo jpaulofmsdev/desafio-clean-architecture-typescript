@@ -1,5 +1,5 @@
 import IEntity from "../../@shared/entity/entity.interface";
-import IAddress from "./address.interface";
+import IAddress from "../value-object/address.interface";
 
 export default interface ICustomer extends IEntity {
     get name(): string

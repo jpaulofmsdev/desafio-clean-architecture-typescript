@@ -77,7 +77,7 @@ describe("Test create customer usecase", () => {
 
         it('should throw an error when address number is empty', async () => {
             const usecase = new CreateCustomerUseCase(mockCustomerRepository)
-            input.address.number = 0
+            input.address.number = null
             await expect(usecase.execute(input)).rejects.toThrow('Number is required')
         })
 

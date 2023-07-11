@@ -1,4 +1,4 @@
-import IAddress from "../entity/address.interface";
+import IAddress from "../value-object/address.interface";
 import Customer from "../entity/customer";
 import ICustomer from "../entity/customer.interface";
 import { v4 as uuid } from "uuid";

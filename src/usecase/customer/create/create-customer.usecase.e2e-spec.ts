@@ -73,7 +73,7 @@ describe('CreateCustomer e2e test', () => {
         })
 
         it('address number is empty', async () => {
-            input.address.number = 0
+            input.address.number = null
             const createCustomerUseCase = new CreateCustomerUseCase(new CustomerRepository())
             expect(createCustomerUseCase.execute(input)).rejects.toThrow('Number is required')
         })

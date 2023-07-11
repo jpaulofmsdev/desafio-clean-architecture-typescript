@@ -98,7 +98,7 @@ describe('Test update customer usecase', () => {
         })
 
         it('when address number is empty', async () => {
-            input.address.number = 0
+            input.address.number = null
             const usecase = new UpdateCustomerUseCase(mockCustomerRepository)
             await expect(usecase.execute(input)).rejects.toThrow('Number is required')
         })

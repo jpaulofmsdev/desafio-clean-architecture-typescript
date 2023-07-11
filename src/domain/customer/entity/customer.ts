@@ -2,6 +2,7 @@ import Entity from "../../@shared/entity/entity.abstract"
 import IEventDispatcher from "../../@shared/event/event-dispatcher.interface"
 import NotificationError from "../../@shared/notification/notification.error"
 import CustomerAddressChangedEvent from "../event/customer-address-changed.event"
+import CustomerValidatorFactory from "../factory/customer.validator.factory"
 import Address from "../value-object/address"
 import ICustomer from "./customer.interface"
 
@@ -40,18 +41,8 @@ export default class Customer extends Entity implements ICustomer{
     }
 
     validate(isThrowError: boolean = false): void {
-        if(this._id.length === 0) {
-            this.notification.addError({
-                message: "Id is required",
-                context: "customer"
-            })
-        }
-        if(this._name.length === 0) {
-            this.notification.addError({
-                message: "Name is required",
-                context: "customer"
-            })
-        }
+        
+        CustomerValidatorFactory.create().validate(this)
 
         if(isThrowError && this.notification.hasErrors()) {
             throw new NotificationError(this.notification.errors)
