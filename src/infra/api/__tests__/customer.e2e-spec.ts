@@ -65,7 +65,7 @@ describe('E2E test for customer', () => {
         expect(response1.status).toBe(201)
 
         const response2 = await request(app)
-        .post('/customer')
+            .post('/customer')
             .send({
                 name: 'Customer 2',
                 address: {
@@ -98,5 +98,24 @@ describe('E2E test for customer', () => {
         expect(response.body.customers[1].address).toHaveProperty('zip', '22222')
         expect(response.body.customers[1].address).toHaveProperty('city', 'City 2')
         
+        const xmlResponse = await request(app)
+            .get('/customer')
+            .set('Accept', 'application/xml')
+            .send()
+
+        expect(xmlResponse.status).toBe(200)
+        expect(xmlResponse.text).toContain(`<?xml version="1.0" encoding="UTF-8"?>`)
+        expect(xmlResponse.text).toContain(`<customers>`)
+        expect(xmlResponse.text).toContain(`<name>Customer 1</name>`)
+        expect(xmlResponse.text).toContain(`<address>`)
+        expect(xmlResponse.text).toContain(`<street>Street 1</street>`)
+        expect(xmlResponse.text).toContain(`<number>111</number>`)
+        expect(xmlResponse.text).toContain(`<zip>11111</zip>`)
+        expect(xmlResponse.text).toContain(`<city>City 1</city>`)
+        expect(xmlResponse.text).toContain(`<name>Customer 2</name>`)
+        expect(xmlResponse.text).toContain(`<street>Street 2</street>`)
+        expect(xmlResponse.text).toContain(`<number>222</number>`)
+        expect(xmlResponse.text).toContain(`<zip>22222</zip>`)
+
     })
 })
